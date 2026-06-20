@@ -19,3 +19,27 @@ export interface ProductsResponse {
   data: Product[];
   pagination: { page: number; limit: number; total: number; hasMore: boolean };
 }
+export interface AIHistoryItem {
+  _id: string;
+  type: "search" | "analysis";
+  query: string;
+  response: unknown;
+  createdAt: string;
+}
+
+export interface ImpactLogEntry {
+  _id: string;
+  overallScore: number;
+  categoryScores: { home: number; fashion: number; food: number; transport: number };
+  carbonFootprint: string;
+  suggestions: string[];
+  highlights: string[];
+  createdAt: string;
+}
+
+export interface DashboardStats {
+  aiSearchCount: number;
+  latestImpactScore: number | null;
+  carbonFootprint: string | null;
+  memberSince: string | null;
+}

@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { Card, LinkButton } from "@heroui/react";
+import { Card, Button } from "@heroui/react";
+import Link from "next/link";
 import { Star, Leaf } from "lucide-react";
 import { Product } from "@/types";
 
@@ -41,11 +42,11 @@ export function ProductCard({ product }: { product: Product }) {
       </Card.Content>
 
       <Card.Footer className="flex items-center justify-between">
-        <span className="text-lg font-semibold text-foreground">${product.price.toFixed(2)}</span>
-        <LinkButton href={`/products/${product._id}`} variant="outline" size="sm">
-          View Details
-        </LinkButton>
-      </Card.Footer>
+  <span className="text-lg font-semibold text-foreground">${product.price.toFixed(2)}</span>
+  <Button asChild variant="outline" size="sm">
+    <Link href={`/products/${product._id}`}>View Details</Link>
+  </Button>
+</Card.Footer>
     </Card>
   );
 }
