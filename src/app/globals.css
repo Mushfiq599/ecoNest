@@ -1,26 +1,57 @@
 @import "tailwindcss";
+@import "@heroui/styles";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root,
+[data-theme="light"] {
+  --background: #FDFDFB;
+  --foreground: #11331E;
+
+  --accent: #1A4D2E;
+  --accent-foreground: #FFFFFF;
+
+  --success: #4F6F52;
+  --success-foreground: #FFFFFF;
+
+  --warning: #D9A23B;
+  --warning-foreground: #11331E;
+
+  --danger: #B3413B;
+  --danger-foreground: #FFFFFF;
+
+  --surface: #FFFFFF;
+  --surface-secondary: #F8F5ED;
+
+  --border: #DCE2DC;
+  --separator: #DCE2DC;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark,
+[data-theme="dark"] {
+  --background: #0D2617;
+  --foreground: #ECE3CE;
+
+  --accent: #739072;
+  --accent-foreground: #0D2617;
+
+  --success: #739072;
+  --success-foreground: #0D2617;
+
+  --warning: #E8C172;
+  --warning-foreground: #0D2617;
+
+  --danger: #D9695F;
+  --danger-foreground: #0D2617;
+
+  --surface: #11331E;
+  --surface-secondary: #153F26;
+
+  --border: #344936;
+  --separator: #344936;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  scroll-behavior: smooth;
 }
