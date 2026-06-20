@@ -43,3 +43,25 @@ export interface DashboardStats {
   carbonFootprint: string | null;
   memberSince: string | null;
 }
+
+export interface AdminUser {
+  _id: string;
+  clerkId: string;
+  email: string;
+  name: string;
+  role: "user" | "admin";
+  createdAt: string;
+}
+
+export interface AdminStats {
+  totalUsers: number;
+  totalProducts: number;
+  totalAIQueries: number;
+  avgEcoScore: number;
+}
+
+export interface UsersResponse {
+  success: boolean;
+  data: AdminUser[];
+  pagination: { page: number; limit: number; total: number; hasMore: boolean };
+}
