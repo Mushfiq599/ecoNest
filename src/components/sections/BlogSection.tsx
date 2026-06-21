@@ -1,27 +1,9 @@
 import Link from "next/link";
 import { Card } from "@heroui/react";
 import { ArrowRight } from "lucide-react";
+import { blogPosts as posts } from "@/lib/data/blogPosts";
 
-const posts = [
-  {
-    slug: "reading-eco-labels",
-    title: "How to actually read an eco-label (most people get this wrong)",
-    excerpt: "Not all green packaging means what you think. Here's what certifications are worth trusting.",
-    date: "Jun 10, 2026",
-  },
-  {
-    slug: "carbon-footprint-basics",
-    title: "Your carbon footprint, explained without the jargon",
-    excerpt: "A practical breakdown of where your footprint actually comes from — and what moves the needle.",
-    date: "Jun 2, 2026",
-  },
-  {
-    slug: "fashion-swaps-that-matter",
-    title: "5 fashion swaps that matter more than 'buying less'",
-    excerpt: "Reducing consumption helps, but these specific swaps compound faster than people expect.",
-    date: "May 24, 2026",
-  },
-];
+
 
 export function BlogSection() {
   return (

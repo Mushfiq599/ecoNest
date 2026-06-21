@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,8 +16,14 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+const DEMO_ACCOUNTS = [
+  { label: "Demo User", email: "demo.user@econest.app", password: "DemoUser123!" },
+  { label: "Demo Admin", email: "demo.admin@econest.app", password: "DemoAdmin123!" },
+];
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signIn } = useSignIn();
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,8 +51,9 @@ export default function LoginPage() {
     }
 
     if (signIn.status === "complete") {
+      const redirectUrl = searchParams.get("redirect_url");
       await signIn.finalize({
-        navigate: ({ decorateUrl }) => router.push(decorateUrl("/user")),
+        navigate: ({ decorateUrl }) => router.push(decorateUrl(redirectUrl || "/user")),
       });
     } else {
       setServerError("Additional verification is required for this account.");
@@ -63,9 +70,9 @@ export default function LoginPage() {
     if (error) setServerError("Google sign-in failed. Please try again.");
   };
 
-  const handleDemoLogin = () => {
-    setValue("email", "demo@econest.app");
-    setValue("password", "DemoPass123!");
+  const handleDemoLogin = (email: string, password: string) => {
+    setValue("email", email);
+    setValue("password", password);
     handleSubmit(onSubmit)();
   };
 
@@ -107,9 +114,20 @@ export default function LoginPage() {
           Continue with Google
         </Button>
 
-        <Button variant="ghost" fullWidth onPress={handleDemoLogin}>
-          Try Demo Account
-        </Button>
+        <div className="space-y-1 rounded-lg border border-border p-3">
+          <p className="text-xs font-medium text-foreground/60">Demo accounts (click to sign in)</p>
+          {DEMO_ACCOUNTS.map((acc) => (
+            <button
+              key={acc.email}
+              type="button"
+              onClick={() => handleDemoLogin(acc.email, acc.password)}
+              className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-xs hover:bg-surface-secondary"
+            >
+              <span className="font-medium text-foreground">{acc.label}</span>
+              <span className="text-foreground/50">{acc.email}</span>
+            </button>
+          ))}
+        </div>
 
         <p className="text-center text-sm text-foreground/70">
           Don&apos;t have an account?{" "}
@@ -117,5 +135,13 @@ export default function LoginPage() {
         </p>
       </Surface>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

@@ -3,16 +3,32 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { Star, Leaf, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton, Button } from "@heroui/react";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/cards/ProductCard";
+
+
 
 export default function ProductDetailsPage() {
   const params = useParams<{ id: string }>();
   const { data: product, isLoading } = useProduct(params.id);
   const { data: related } = useRelatedProducts(params.id);
   const [activeImage, setActiveImage] = useState(0);
+  const { isSignedIn } = useUser();
+const router = useRouter();
+const [added, setAdded] = useState(false);
+
+const handleAddToCart = () => {
+  if (!isSignedIn) {
+    router.push(`/login?redirect_url=/products/${product._id}`);
+    return;
+  }
+  setAdded(true);
+  setTimeout(() => setAdded(false), 2000);
+};
 
   if (isLoading) {
     return (
@@ -36,15 +52,49 @@ export default function ProductDetailsPage() {
       </div>
     );
   }
+  
 
   const images = product.images.length ? product.images : ["/images/placeholder-product.jpg"];
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-10 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: product.name,
+            description: product.description,
+            image: product.images,
+            offers: {
+              "@type": "Offer",
+              price: product.price,
+              priceCurrency: "USD",
+              availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            },
+            ...(product.ratingCount > 0 && {
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: product.rating,
+                reviewCount: product.ratingCount,
+              },
+            }),
+          }),
+        }}
+      />
+
       <div className="grid gap-10 lg:grid-cols-2">
         <div>
           <div className="relative aspect-square overflow-hidden rounded-2xl bg-surface-secondary">
-            <Image src={images[activeImage]} alt={product.name} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" priority />
+            <Image
+              src={images[activeImage]}
+              alt={product.name}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+              priority
+            />
             {images.length > 1 && (
               <>
                 <button
@@ -71,7 +121,9 @@ export default function ProductDetailsPage() {
                 <button
                   key={img + i}
                   onClick={() => setActiveImage(i)}
-                  className={`relative h-16 w-16 overflow-hidden rounded-lg border-2 ${i === activeImage ? "border-accent" : "border-transparent"}`}
+                  className={`relative h-16 w-16 overflow-hidden rounded-lg border-2 ${
+                    i === activeImage ? "border-accent" : "border-transparent"
+                  }`}
                 >
                   <Image src={img} alt="" fill sizes="64px" className="object-cover" />
                 </button>
@@ -95,13 +147,22 @@ export default function ProductDetailsPage() {
           </div>
 
           <p className="mt-4 text-2xl font-semibold text-foreground">${product.price.toFixed(2)}</p>
-          <p className="mt-1 text-sm text-foreground/60">{product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}</p>
+          <p className="mt-1 text-sm text-foreground/60">
+            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+          </p>
 
           <p className="mt-6 text-foreground/80">{product.description}</p>
 
-          <Button variant="primary" size="lg" fullWidth className="mt-6" isDisabled={product.stock === 0}>
-            Add to Cart
-          </Button>
+          <Button
+  variant="primary"
+  size="lg"
+  fullWidth
+  className="mt-6"
+  isDisabled={product.stock === 0}
+  onPress={handleAddToCart}
+>
+  {added ? "Added ✓" : "Add to Cart"}
+</Button>
 
           <div className="mt-8 rounded-xl bg-surface-secondary p-4">
             <h2 className="text-sm font-semibold text-foreground">Specifications</h2>
