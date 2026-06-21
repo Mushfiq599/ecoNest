@@ -21,6 +21,7 @@ export interface ProductsResponse {
 }
 export interface AIHistoryItem {
   _id: string;
+  clerkId: string;
   type: "search" | "analysis";
   query: string;
   response: unknown;
@@ -64,4 +65,14 @@ export interface UsersResponse {
   success: boolean;
   data: AdminUser[];
   pagination: { page: number; limit: number; total: number; hasMore: boolean };
+}
+export interface SystemSettings {
+  maintenanceMode: boolean;
+  allowNewRegistrations: boolean;
+  emailNotifications: boolean;
+}
+
+export interface EcoScoreBucket {
+  range: string;
+  count: number;
 }

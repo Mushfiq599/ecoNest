@@ -9,6 +9,7 @@ import { BlogSection } from "@/components/sections/BlogSection";
 import { NewsletterSection } from "@/components/sections/NewsletterSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { CTASection } from "@/components/sections/CTASection";
+import { AISearchSection } from "@/components/sections/AISearchSection";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Navbar />
       <main>
         <HeroSection />
+        <AISearchSection />
         <FeaturesSection />
         <CategoriesSection />
         <StatisticsSection />

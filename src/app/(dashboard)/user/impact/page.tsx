@@ -2,11 +2,13 @@
 
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Card, Skeleton } from "@heroui/react";
-import { Leaf } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useImpactLogs } from "@/hooks/useImpact";
+import { EcoAnalyzer } from "@/components/ai/EcoAnalyzer";
 
 export default function ImpactPage() {
   const { data: logs, isLoading } = useImpactLogs();
+  const queryClient = useQueryClient();
   const latest = logs?.[logs.length - 1];
 
   const categoryData = latest
@@ -23,6 +25,8 @@ export default function ImpactPage() {
     score: log.overallScore,
   }));
 
+  const refreshImpact = () => queryClient.invalidateQueries({ queryKey: ["impact-logs"] });
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -34,12 +38,12 @@ export default function ImpactPage() {
 
   if (!latest) {
     return (
-      <div className="flex flex-col items-center justify-center gap-3 rounded-2xl bg-surface-secondary py-24 text-center">
-        <Leaf className="text-foreground/40" size={32} />
-        <p className="font-medium text-foreground">No impact analysis yet</p>
-        <p className="max-w-sm text-sm text-foreground/60">
-          Once the AI Impact Analyzer is live (Phase 7), your first analysis will appear here automatically.
-        </p>
+      <div className="mx-auto max-w-xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Your Impact</h1>
+          <p className="text-foreground/70">Run your first analysis to see your sustainability score.</p>
+        </div>
+        <EcoAnalyzer onComplete={refreshImpact} />
       </div>
     );
   }
@@ -118,6 +122,8 @@ export default function ImpactPage() {
           </Card.Content>
         </Card>
       </div>
+
+      <EcoAnalyzer onComplete={refreshImpact} />
     </div>
   );
 }
