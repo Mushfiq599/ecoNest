@@ -43,19 +43,19 @@ export function Footer() {
               one decision at a time.
             </p>
             <p className="mt-4 text-sm text-foreground/70">
-              [email protected] · Chattogram, Bangladesh
-            </p>
+  <a href="mailto:mellowm678@gmail.com" className="hover:text-accent">mellowm678@gmail.com</a> · Chattogram, Bangladesh
+</p>
             <div className="mt-4 flex gap-3">
-  <a href="#" aria-label="X (Twitter)" className="text-foreground/60 hover:text-accent">
+  <a href="https://x.com" aria-label="X (Twitter)" className="text-foreground/60 hover:text-accent">
     <XIcon />
   </a>
-  <a href="#" aria-label="Instagram" className="text-foreground/60 hover:text-accent">
+  <a href="https://instagram.com" aria-label="Instagram" className="text-foreground/60 hover:text-accent">
     <InstagramIcon />
   </a>
-  <a href="#" aria-label="LinkedIn" className="text-foreground/60 hover:text-accent">
+  <a href="https://linkedin.com" aria-label="LinkedIn" className="text-foreground/60 hover:text-accent">
     <LinkedInIcon />
   </a>
-  <a href="#" aria-label="GitHub" className="text-foreground/60 hover:text-accent">
+  <a href="https://github.com" aria-label="GitHub" className="text-foreground/60 hover:text-accent">
     <GitHubIcon />
   </a>
 </div>

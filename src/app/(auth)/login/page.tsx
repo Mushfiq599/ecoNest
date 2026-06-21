@@ -8,6 +8,7 @@ import { z } from "zod";
 import { useSignIn } from "@clerk/nextjs";
 import { Form, TextField, Label, Input, FieldError, Button, Surface } from "@heroui/react";
 import { getClerkErrorMessage } from "@/lib/utils/clerk-errors";
+import { AuthSidePanel } from "@/components/auth/AuthSidePanel";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Enter a valid email address"),
@@ -15,11 +16,6 @@ const loginSchema = z.object({
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
-
-const DEMO_ACCOUNTS = [
-  { label: "Demo User", email: "demo.user@econest.app", password: "DemoUser123!" },
-  { label: "Demo Admin", email: "demo.admin@econest.app", password: "DemoAdmin123!" },
-];
 
 function LoginForm() {
   const router = useRouter();
@@ -31,9 +27,15 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
+
+  const completeSignIn = async () => {
+    const redirectUrl = searchParams.get("redirect_url");
+    await signIn.finalize({
+      navigate: ({ decorateUrl }) => router.push(decorateUrl(redirectUrl || "/user")),
+    });
+  };
 
   const onSubmit = async (data: LoginForm) => {
     setServerError(null);
@@ -51,14 +53,20 @@ function LoginForm() {
     }
 
     if (signIn.status === "complete") {
-      const redirectUrl = searchParams.get("redirect_url");
-      await signIn.finalize({
-        navigate: ({ decorateUrl }) => router.push(decorateUrl(redirectUrl || "/user")),
-      });
-    } else {
-      setServerError("Additional verification is required for this account.");
-      setIsSubmitting(false);
+      await completeSignIn();
+      return;
     }
+
+    if (signIn.status === "needs_new_password") {
+      setServerError(
+        "This account needs a password reset before signing in. Use 'Forgot password' or contact support."
+      );
+      setIsSubmitting(false);
+      return;
+    }
+
+    setServerError("Additional verification is required for this account.");
+    setIsSubmitting(false);
   };
 
   const handleGoogleSignIn = async () => {
@@ -70,14 +78,13 @@ function LoginForm() {
     if (error) setServerError("Google sign-in failed. Please try again.");
   };
 
-  const handleDemoLogin = (email: string, password: string) => {
-    setValue("email", email);
-    setValue("password", password);
-    handleSubmit(onSubmit)();
-  };
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <AuthSidePanel
+      title="Live sustainably, one choice at a time"
+      description="Track your impact, get AI-powered recommendations, and join a community making real change."
+    />
+    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
       <Surface className="w-full max-w-md space-y-6 rounded-2xl p-8">
         <div className="space-y-1 text-center">
           <h1 className="text-2xl font-semibold text-foreground">Welcome back</h1>
@@ -114,26 +121,12 @@ function LoginForm() {
           Continue with Google
         </Button>
 
-        <div className="space-y-1 rounded-lg border border-border p-3">
-          <p className="text-xs font-medium text-foreground/60">Demo accounts (click to sign in)</p>
-          {DEMO_ACCOUNTS.map((acc) => (
-            <button
-              key={acc.email}
-              type="button"
-              onClick={() => handleDemoLogin(acc.email, acc.password)}
-              className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-xs hover:bg-surface-secondary"
-            >
-              <span className="font-medium text-foreground">{acc.label}</span>
-              <span className="text-foreground/50">{acc.email}</span>
-            </button>
-          ))}
-        </div>
-
         <p className="text-center text-sm text-foreground/70">
           Don&apos;t have an account?{" "}
           <a href="/register" className="text-accent hover:underline">Register</a>
         </p>
       </Surface>
+      </div>
     </div>
   );
 }

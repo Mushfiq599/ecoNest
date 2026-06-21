@@ -8,6 +8,7 @@ import { z } from "zod";
 import { useSignUp } from "@clerk/nextjs";
 import { Form, TextField, Label, Input, FieldError, Button, Surface } from "@heroui/react";
 import { getClerkErrorMessage } from "@/lib/utils/clerk-errors";
+import { AuthSidePanel } from "@/components/auth/AuthSidePanel";
 
 const registerSchema = z
   .object({
@@ -92,6 +93,11 @@ export default function RegisterPage() {
   if (step === "verify") {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <AuthSidePanel
+      title="Join EcoNest"
+      description="Discover eco-rated products, track your footprint, and get AI-powered sustainability advice."
+    />
+    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
         <Surface className="w-full max-w-md space-y-6 rounded-2xl p-8">
           <div className="space-y-1 text-center">
             <h1 className="text-2xl font-semibold text-foreground">Verify your email</h1>
@@ -119,12 +125,18 @@ export default function RegisterPage() {
 
           <div id="clerk-captcha" />
         </Surface>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <AuthSidePanel
+      title="Almost there"
+      description="Check your inbox for a 6-digit verification code to finish setting up your account."
+    />
+    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
       <Surface className="w-full max-w-md space-y-6 rounded-2xl p-8">
         <div className="space-y-1 text-center">
           <h1 className="text-2xl font-semibold text-foreground">Create your account</h1>
@@ -180,6 +192,7 @@ export default function RegisterPage() {
           <a href="/login" className="text-accent hover:underline">Sign in</a>
         </p>
       </Surface>
+      </div>
     </div>
   );
 }

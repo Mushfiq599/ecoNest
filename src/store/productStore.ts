@@ -3,7 +3,7 @@ import { ProductCategory } from "@/types";
 
 interface ProductFilters {
   search: string;
-  category: ProductCategory | "all";
+  categories: ProductCategory[];
   minPrice: number;
   maxPrice: number;
   minEcoScore: number;
@@ -12,7 +12,7 @@ interface ProductFilters {
 
 interface ProductStore extends ProductFilters {
   setSearch: (search: string) => void;
-  setCategory: (category: ProductFilters["category"]) => void;
+  toggleCategory: (category: ProductCategory) => void;
   setPriceRange: (min: number, max: number) => void;
   setMinEcoScore: (score: number) => void;
   setSort: (sort: ProductFilters["sort"]) => void;
@@ -20,7 +20,7 @@ interface ProductStore extends ProductFilters {
 
 const defaults: ProductFilters = {
   search: "",
-  category: "all",
+  categories: [],
   minPrice: 0,
   maxPrice: 1000,
   minEcoScore: 0,
@@ -30,7 +30,12 @@ const defaults: ProductFilters = {
 export const useProductStore = create<ProductStore>((set) => ({
   ...defaults,
   setSearch: (search) => set({ search }),
-  setCategory: (category) => set({ category }),
+  toggleCategory: (category) =>
+    set((state) => ({
+      categories: state.categories.includes(category)
+        ? state.categories.filter((c) => c !== category)
+        : [...state.categories, category],
+    })),
   setPriceRange: (minPrice, maxPrice) => set({ minPrice, maxPrice }),
   setMinEcoScore: (minEcoScore) => set({ minEcoScore }),
   setSort: (sort) => set({ sort }),

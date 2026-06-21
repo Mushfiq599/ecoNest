@@ -9,11 +9,12 @@ const categories: ProductCategory[] = ["home", "fashion", "food", "transport"];
 interface ProductFormValues {
   name: string;
   description: string;
+  longDescription: string;
   price: number;
   category: ProductCategory;
   ecoScore: number;
   stock: number;
-  images: string;
+  images: string; 
 }
 
 export function ProductFormModal({
@@ -30,14 +31,15 @@ export function ProductFormModal({
   trigger: React.ReactNode;
 }) {
   const [values, setValues] = useState<ProductFormValues>({
-    name: product?.name ?? "",
-    description: product?.description ?? "",
-    price: product?.price ?? 0,
-    category: product?.category ?? "home",
-    ecoScore: product?.ecoScore ?? 50,
-    stock: product?.stock ?? 0,
-    images: product?.images?.[0] ?? "",
-  });
+  name: product?.name ?? "",
+  description: product?.description ?? "",
+  longDescription: product?.longDescription ?? "",
+  price: product?.price ?? 0,
+  category: product?.category ?? "home",
+  ecoScore: product?.ecoScore ?? 50,
+  stock: product?.stock ?? 0,
+  images: product?.images?.join("\n") ?? "",
+});
 
   return (
     <Modal>
@@ -63,6 +65,15 @@ export function ProductFormModal({
                       onChange={(e) => setValues((v) => ({ ...v, description: e.target.value }))}
                     />
                   </TextField>
+
+                  <TextField>
+  <Label>Long description (shown on product detail page)</Label>
+  <TextArea
+    value={values.longDescription}
+    onChange={(e) => setValues((v) => ({ ...v, longDescription: e.target.value }))}
+    rows={4}
+  />
+</TextField>
 
                   <div className="grid grid-cols-2 gap-4">
                     <TextField>
@@ -115,13 +126,14 @@ export function ProductFormModal({
                   </div>
 
                   <TextField>
-                    <Label>Image URL</Label>
-                    <Input
-                      value={values.images}
-                      onChange={(e) => setValues((v) => ({ ...v, images: e.target.value }))}
-                      placeholder="https://..."
-                    />
-                  </TextField>
+  <Label>Image URLs (one per line)</Label>
+  <TextArea
+    value={values.images}
+    onChange={(e) => setValues((v) => ({ ...v, images: e.target.value }))}
+    placeholder={"https://...\nhttps://...\nhttps://..."}
+    rows={3}
+  />
+</TextField>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="ghost" onPress={close}>Cancel</Button>

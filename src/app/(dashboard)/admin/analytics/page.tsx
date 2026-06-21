@@ -37,10 +37,11 @@ export default function AdminAnalyticsPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card variant="default">
           <Card.Header><Card.Title>Eco-Score Distribution</Card.Title></Card.Header>
-          <Card.Content className="h-72">
+          <Card.Content >
             {distributionLoading ? (
               <Skeleton className="h-full w-full rounded-lg" />
             ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={distribution}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -50,18 +51,20 @@ export default function AdminAnalyticsPage() {
                   <Bar dataKey="count" fill="var(--accent)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              </div>
             )}
           </Card.Content>
         </Card>
 
         <Card variant="default">
           <Card.Header><Card.Title>Category Breakdown</Card.Title></Card.Header>
-          <Card.Content className="h-72">
+          <Card.Content >
             {breakdownLoading ? (
               <Skeleton className="h-full w-full rounded-lg" />
             ) : categoryData.length === 0 ? (
               <div className="flex h-full items-center justify-center text-sm text-foreground/50">No products yet</div>
             ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={categoryData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={95}>
@@ -73,6 +76,7 @@ export default function AdminAnalyticsPage() {
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
+              </div>
             )}
           </Card.Content>
         </Card>

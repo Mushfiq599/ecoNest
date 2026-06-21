@@ -63,10 +63,11 @@ export default function UserDashboardPage() {
           <Card.Header>
             <Card.Title>AI Usage (Last 7 Days)</Card.Title>
           </Card.Header>
-          <Card.Content className="h-64">
+          <Card.Content>
             {historyLoading ? (
               <Skeleton className="h-full w-full rounded-lg" />
             ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={usageData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -76,6 +77,7 @@ export default function UserDashboardPage() {
                   <Bar dataKey="count" fill="var(--accent)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              </div>
             )}
           </Card.Content>
         </Card>
@@ -84,7 +86,7 @@ export default function UserDashboardPage() {
           <Card.Header>
             <Card.Title>Impact Score Over Time</Card.Title>
           </Card.Header>
-          <Card.Content className="h-64">
+          <Card.Content >
             {impactLoading ? (
               <Skeleton className="h-full w-full rounded-lg" />
             ) : impactData.length === 0 ? (
@@ -92,6 +94,7 @@ export default function UserDashboardPage() {
                 No impact analyses yet
               </div>
             ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={impactData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -101,6 +104,7 @@ export default function UserDashboardPage() {
                   <Line type="monotone" dataKey="score" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} />
                 </LineChart>
               </ResponsiveContainer>
+              </div>
             )}
           </Card.Content>
         </Card>

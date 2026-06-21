@@ -50,10 +50,11 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card variant="default">
           <Card.Header><Card.Title>New Signups (Last 7 Days)</Card.Title></Card.Header>
-          <Card.Content className="h-64">
+          <Card.Content >
             {growthLoading ? (
               <Skeleton className="h-full w-full rounded-lg" />
             ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={signupData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -63,18 +64,20 @@ export default function AdminDashboardPage() {
                   <Bar dataKey="count" fill="var(--accent)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              </div>
             )}
           </Card.Content>
         </Card>
 
         <Card variant="default">
           <Card.Header><Card.Title>Products by Category</Card.Title></Card.Header>
-          <Card.Content className="h-64">
+          <Card.Content >
             {breakdownLoading ? (
               <Skeleton className="h-full w-full rounded-lg" />
             ) : categoryData.length === 0 ? (
               <div className="flex h-full items-center justify-center text-sm text-foreground/50">No products yet</div>
             ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={categoryData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={80}>
@@ -86,6 +89,7 @@ export default function AdminDashboardPage() {
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
+              </div>
             )}
           </Card.Content>
         </Card>

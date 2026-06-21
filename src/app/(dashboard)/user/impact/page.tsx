@@ -60,7 +60,8 @@ export default function ImpactPage() {
           <Card.Header>
             <Card.Title>Score by Category</Card.Title>
           </Card.Header>
-          <Card.Content className="h-64">
+          <Card.Content >
+            <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={categoryData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -70,6 +71,7 @@ export default function ImpactPage() {
                 <Bar dataKey="score" fill="var(--accent)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
+            </div>
           </Card.Content>
         </Card>
 
@@ -77,7 +79,8 @@ export default function ImpactPage() {
           <Card.Header>
             <Card.Title>Score Trend</Card.Title>
           </Card.Header>
-          <Card.Content className="h-64">
+          <Card.Content >
+            <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trendData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -87,6 +90,7 @@ export default function ImpactPage() {
                 <Line type="monotone" dataKey="score" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
+            </div>
           </Card.Content>
         </Card>
       </div>

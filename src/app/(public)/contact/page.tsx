@@ -49,7 +49,7 @@ export default function ContactPage() {
             <Mail size={18} className="mt-0.5 text-accent" />
             <div>
               <p className="font-medium text-foreground">Email</p>
-              <p>[email protected]</p>
+              <a href="mailto:mellowm678@gmail.com" className="hover:text-accent">mellowm678@gmail.com</a>
             </div>
           </div>
           <div className="flex items-start gap-3">

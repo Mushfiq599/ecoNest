@@ -9,6 +9,7 @@ import { Star, Leaf, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton, Button } from "@heroui/react";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/cards/ProductCard";
+import { useCartStore } from "@/store/cartStore";
 
 
 
@@ -19,15 +20,21 @@ export default function ProductDetailsPage() {
   const [activeImage, setActiveImage] = useState(0);
   const { isSignedIn } = useUser();
 const router = useRouter();
-const [added, setAdded] = useState(false);
+
+const addItem = useCartStore((s) => s.addItem);
 
 const handleAddToCart = () => {
   if (!isSignedIn) {
     router.push(`/login?redirect_url=/products/${product._id}`);
     return;
   }
-  setAdded(true);
-  setTimeout(() => setAdded(false), 2000);
+  addItem({
+    productId: product._id,
+    name: product.name,
+    price: product.price,
+    image: product.images[0] ?? "",
+  });
+  
 };
 
   if (isLoading) {
@@ -153,6 +160,15 @@ const handleAddToCart = () => {
 
           <p className="mt-6 text-foreground/80">{product.description}</p>
 
+{product.longDescription && (
+  <div className="mt-6">
+    <h2 className="text-sm font-semibold text-foreground">About this product</h2>
+    <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-foreground/80">
+      {product.longDescription}
+    </p>
+  </div>
+)}
+
           <Button
   variant="primary"
   size="lg"
@@ -161,7 +177,7 @@ const handleAddToCart = () => {
   isDisabled={product.stock === 0}
   onPress={handleAddToCart}
 >
-  {added ? "Added ✓" : "Add to Cart"}
+  Add to Cart
 </Button>
 
           <div className="mt-8 rounded-xl bg-surface-secondary p-4">

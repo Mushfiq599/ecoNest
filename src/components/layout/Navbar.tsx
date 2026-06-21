@@ -9,6 +9,8 @@ import { Button, Dropdown, Label } from "@heroui/react";
 import { Menu, X, Leaf } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useRole } from "@/hooks/useRole";
+import { CartDrawer } from "@/components/layout/CartDrawer";
+
 
 const loggedOutLinks = [
   { href: "/", label: "Home" },
@@ -66,6 +68,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <CartDrawer />
           <ThemeToggle />
 
           {isSignedIn ? (
@@ -124,6 +127,7 @@ export function Navbar() {
               </Link>
             ))}
             <div className="mt-2 flex items-center justify-between px-3">
+              <CartDrawer />
               <ThemeToggle />
               {!isSignedIn && (
                 <div className="flex gap-2">

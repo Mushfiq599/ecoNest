@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Input, TextField, Select, Label, ListBox, Slider, Skeleton } from "@heroui/react";
+import { Input, TextField, Slider, Skeleton } from "@heroui/react";
 import { Search } from "lucide-react";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useProductStore } from "@/store/productStore";
+import { ProductCategory } from "@/types";
 
-const categories = [
-  { id: "all", label: "All Categories" },
+const categoryOptions: { id: ProductCategory; label: string }[] = [
   { id: "home", label: "Home" },
   { id: "fashion", label: "Fashion" },
   { id: "food", label: "Food" },
@@ -25,8 +25,8 @@ const sortOptions = [
 
 export default function ExplorePage() {
   const {
-    search, category, minPrice, maxPrice, minEcoScore, sort,
-    setSearch, setCategory, setPriceRange, setMinEcoScore, setSort,
+    search, categories, minPrice, maxPrice, minEcoScore, sort,
+    setSearch, toggleCategory, setPriceRange, setMinEcoScore, setSort,
   } = useProductStore();
 
   const debouncedSearch = useDebounce(search, 300);
@@ -34,7 +34,7 @@ export default function ExplorePage() {
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useProducts({
     search: debouncedSearch || undefined,
-    category: category === "all" ? undefined : category,
+    category: categories.length > 0 ? categories.join(",") : undefined,
     minPrice,
     maxPrice,
     minEcoScore: minEcoScore || undefined,
@@ -44,16 +44,12 @@ export default function ExplorePage() {
   useEffect(() => {
     const el = loadMoreRef.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) fetchNextPage();
       },
       { rootMargin: "200px" }
     );
-
     observer.observe(el);
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
@@ -71,22 +67,21 @@ export default function ExplorePage() {
             <Input placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} />
           </TextField>
 
-          <Select placeholder="Category" selectedKey={category} onSelectionChange={(key) => setCategory(key as typeof category)}>
-            <Label>Category</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {categories.map((c) => (
-                  <ListBox.Item key={c.id} id={c.id} textValue={c.label}>
-                    {c.label}
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-foreground">Category</p>
+            {categoryOptions.map((c) => (
+              <label key={c.id} className="flex items-center gap-2 text-sm text-foreground/80">
+                <input
+                  type="checkbox"
+                  checked={categories.includes(c.id)}
+                  onChange={() => toggleCategory(c.id)}
+                  style={{ accentColor: "var(--accent)" }}
+                  className="h-4 w-4 rounded"
+                />
+                {c.label}
+              </label>
+            ))}
+          </div>
 
           <Slider
             value={[minPrice, maxPrice]}
@@ -98,7 +93,7 @@ export default function ExplorePage() {
             maxValue={1000}
             step={10}
           >
-            <Label>Price Range</Label>
+            <p className="text-sm font-medium text-foreground">Price Range</p>
             <Slider.Output>{({ state }) => state.values.map((v) => `$${v}`).join(" – ")}</Slider.Output>
             <Slider.Track>
               {({ state }) => (
@@ -113,7 +108,7 @@ export default function ExplorePage() {
           </Slider>
 
           <Slider value={minEcoScore} onChange={(value) => setMinEcoScore(value as number)} minValue={0} maxValue={100} step={5}>
-            <Label>Minimum Eco-Score</Label>
+            <p className="text-sm font-medium text-foreground">Minimum Eco-Score</p>
             <Slider.Output />
             <Slider.Track>
               <Slider.Fill />
@@ -121,22 +116,21 @@ export default function ExplorePage() {
             </Slider.Track>
           </Slider>
 
-          <Select placeholder="Sort by" selectedKey={sort} onSelectionChange={(key) => setSort(key as typeof sort)}>
-            <Label>Sort By</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {sortOptions.map((s) => (
-                  <ListBox.Item key={s.id} id={s.id} textValue={s.label}>
-                    {s.label}
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-          </Select>
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-foreground">Sort By</p>
+            {sortOptions.map((s) => (
+              <label key={s.id} className="flex items-center gap-2 text-sm text-foreground/80">
+                <input
+                  type="radio"
+                  name="sort"
+                  checked={sort === s.id}
+                  onChange={() => setSort(s.id as typeof sort)}
+                  style={{ accentColor: "var(--accent)" }}
+                />
+                {s.label}
+              </label>
+            ))}
+          </div>
         </aside>
 
         <div>
@@ -164,7 +158,6 @@ export default function ExplorePage() {
                   <ProductCard key={product._id} product={product} />
                 ))}
               </div>
-
               <div ref={loadMoreRef} className="mt-8">
                 {isFetchingNextPage && (
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
