@@ -311,7 +311,7 @@ cp .env.example .env
 cd econest && npm run dev
 
 # Terminal 2 — Backend
-cd econest-backend && npm run dev
+cd backend && npm run dev
 ```
 
 Visit `http://localhost:3000` for the frontend and `http://localhost:5000` for the backend.
@@ -417,8 +417,8 @@ Role checked (user | admin) → correct dashboard shown
 **Demo Credentials** (for testing):
 | Role | Email | Password |
 |------|-------|---------|
-| User | demo@econest.com | Demo@12345 |
-| Admin | admin@econest.com | Admin@12345 |
+| User | demo.user@econest.app | ecoNest@555 |
+| Admin | demo.admin@econest.app | ecoNest@555 |
 
 ---
 
