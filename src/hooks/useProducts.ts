@@ -1,8 +1,10 @@
 "use client";
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, keepPreviousData} from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { Product, ProductsResponse } from "@/types";
+
+
 
 interface UseProductsParams {
   search?: string;
@@ -11,20 +13,19 @@ interface UseProductsParams {
   maxPrice?: number;
   minEcoScore?: number;
   sort?: string;
+  page: number;
 }
 
 export function useProducts(params: UseProductsParams) {
-  return useInfiniteQuery({
+  return useQuery({
     queryKey: ["products", params],
-    queryFn: async ({ pageParam }) => {
+    queryFn: async () => {
       const { data } = await apiClient.get<ProductsResponse>("/products", {
-        params: { ...params, page: pageParam, limit: 12 },
+        params: { ...params, limit: 12 },
       });
       return data;
     },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) =>
-      lastPage.pagination.hasMore ? lastPage.pagination.page + 1 : undefined,
+    placeholderData: keepPreviousData,
   });
 }
 

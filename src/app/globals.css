@@ -3,7 +3,7 @@
 
 :root,
 [data-theme="light"] {
-  --background: #FDFDFB;
+  --background: #EEE5D2;
   --foreground: #11331E;
 
   --accent: #1A4D2E;
@@ -21,8 +21,8 @@
   --surface: #FFFFFF;
   --surface-secondary: #F8F5ED;
 
-  --border: #DCE2DC;
-  --separator: #DCE2DC;
+  --border: #C2BAA9;
+  --separator: #C2BAA9;
 }
 
 .dark,
@@ -55,6 +55,27 @@ body {
     "Helvetica Neue", Arial, sans-serif;
   scroll-behavior: smooth;
 }
+
+@theme {
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  --animate-slide-up: slideUp 0.4s ease-out;
+  @keyframes slideUp {
+    0% { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  --animate-float: float 6s ease-in-out infinite;
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

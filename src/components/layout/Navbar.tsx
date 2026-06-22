@@ -68,8 +68,9 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <CartDrawer />
+          
           <ThemeToggle />
+          {isSignedIn && <CartDrawer />}
 
           {isSignedIn ? (
             <Dropdown>
@@ -127,8 +128,10 @@ export function Navbar() {
               </Link>
             ))}
             <div className="mt-2 flex items-center justify-between px-3">
-              <CartDrawer />
-              <ThemeToggle />
+              <div className="flex items-center gap-2">
+    <ThemeToggle />
+    {isSignedIn && <CartDrawer />}
+  </div>
               {!isSignedIn && (
                 <div className="flex gap-2">
                   <Button size="sm" variant="ghost" onPress={() => router.push("/login")}>

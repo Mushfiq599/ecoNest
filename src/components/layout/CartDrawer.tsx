@@ -21,14 +21,14 @@ export function CartDrawer() {
     <Drawer>
       <Button ref={triggerRef} variant="ghost" isIconOnly aria-label="Cart" className="relative">
         <ShoppingCart size={18} />
-        {itemCount > 0 && (
+         (
           <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-semibold text-accent-foreground">
-            {itemCount}
-          </span>
-        )}
+  {itemCount}
+</span>
+        )
       </Button>
       <Drawer.Backdrop>
-        <Drawer.Content placement="right" className="w-full max-w-sm">
+        <Drawer.Content placement="right" className="fixed inset-y-0 right-0 left-auto h-full w-full max-w-sm">
           <Drawer.Dialog>
             <Drawer.Header>
               <Drawer.Heading>Your Cart</Drawer.Heading>

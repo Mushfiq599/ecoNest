@@ -84,7 +84,7 @@ function LoginForm() {
       title="Live sustainably, one choice at a time"
       description="Track your impact, get AI-powered recommendations, and join a community making real change."
     />
-    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
+    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-3/5">
       <Surface className="w-full max-w-md space-y-6 rounded-2xl p-8">
         <div className="space-y-1 text-center">
           <h1 className="text-2xl font-semibold text-foreground">Welcome back</h1>

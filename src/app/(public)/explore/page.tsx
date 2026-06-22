@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Input, TextField, Slider, Skeleton } from "@heroui/react";
+import { useState, useEffect } from "react";
+import { Input, TextField, Slider, Skeleton, Pagination } from "@heroui/react";
 import { Search } from "lucide-react";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
@@ -29,32 +29,25 @@ export default function ExplorePage() {
     setSearch, toggleCategory, setPriceRange, setMinEcoScore, setSort,
   } = useProductStore();
 
+  const [page, setPage] = useState(1);
   const debouncedSearch = useDebounce(search, 300);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useProducts({
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, categories, minPrice, maxPrice, minEcoScore, sort]);
+
+  const { data, isLoading } = useProducts({
     search: debouncedSearch || undefined,
     category: categories.length > 0 ? categories.join(",") : undefined,
     minPrice,
     maxPrice,
     minEcoScore: minEcoScore || undefined,
     sort,
+    page,
   });
 
-  useEffect(() => {
-    const el = loadMoreRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) fetchNextPage();
-      },
-      { rootMargin: "200px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const products = data?.pages.flatMap((page) => page.data) ?? [];
+  const products = data?.data ?? [];
+  const totalPages = data ? Math.max(1, Math.ceil(data.pagination.total / data.pagination.limit)) : 1;
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-10 sm:px-6 lg:px-8">
@@ -136,7 +129,7 @@ export default function ExplorePage() {
         <div>
           {isLoading ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {Array.from({ length: 4 }).map((_, i) => (
+              {Array.from({ length: 12 }).map((_, i) => (
                 <div key={i} className="space-y-3">
                   <Skeleton className="aspect-[4/3] w-full rounded-xl" />
                   <Skeleton className="h-4 w-2/3 rounded-md" />
@@ -158,15 +151,32 @@ export default function ExplorePage() {
                   <ProductCard key={product._id} product={product} />
                 ))}
               </div>
-              <div ref={loadMoreRef} className="mt-8">
-                {isFetchingNextPage && (
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {Array.from({ length: 4 }).map((_, i) => (
-                      <Skeleton key={i} className="aspect-[4/3] w-full rounded-xl" />
-                    ))}
-                  </div>
-                )}
-              </div>
+
+              {totalPages > 1 && (
+                <div className="mt-10 flex justify-center">
+                  <Pagination>
+                    <Pagination.Content>
+                      <Pagination.Item>
+                        <Pagination.Previous isDisabled={page === 1} onPress={() => setPage((p) => Math.max(1, p - 1))}>
+                          <Pagination.PreviousIcon />
+                        </Pagination.Previous>
+                      </Pagination.Item>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                        <Pagination.Item key={p}>
+                          <Pagination.Link isActive={page === p} onPress={() => setPage(p)}>
+                            {p}
+                          </Pagination.Link>
+                        </Pagination.Item>
+                      ))}
+                      <Pagination.Item>
+                        <Pagination.Next isDisabled={page === totalPages} onPress={() => setPage((p) => Math.min(totalPages, p + 1))}>
+                          <Pagination.NextIcon />
+                        </Pagination.Next>
+                      </Pagination.Item>
+                    </Pagination.Content>
+                  </Pagination>
+                </div>
+              )}
             </>
           )}
         </div>

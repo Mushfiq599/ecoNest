@@ -136,7 +136,7 @@ export default function RegisterPage() {
       title="Almost there"
       description="Check your inbox for a 6-digit verification code to finish setting up your account."
     />
-    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
+    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-3/5">
       <Surface className="w-full max-w-md space-y-6 rounded-2xl p-8">
         <div className="space-y-1 text-center">
           <h1 className="text-2xl font-semibold text-foreground">Create your account</h1>

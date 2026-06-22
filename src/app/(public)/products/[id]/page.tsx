@@ -1,41 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Star, Leaf, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton, Button } from "@heroui/react";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
-import { ProductCard } from "@/components/cards/ProductCard";
 import { useCartStore } from "@/store/cartStore";
-
-
+import { ProductCard } from "@/components/cards/ProductCard";
 
 export default function ProductDetailsPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
+  const { isSignedIn } = useUser();
   const { data: product, isLoading } = useProduct(params.id);
   const { data: related } = useRelatedProducts(params.id);
+  const addItem = useCartStore((s) => s.addItem);
   const [activeImage, setActiveImage] = useState(0);
-  const { isSignedIn } = useUser();
-const router = useRouter();
-
-const addItem = useCartStore((s) => s.addItem);
-
-const handleAddToCart = () => {
-  if (!isSignedIn) {
-    router.push(`/login?redirect_url=/products/${product._id}`);
-    return;
-  }
-  addItem({
-    productId: product._id,
-    name: product.name,
-    price: product.price,
-    image: product.images[0] ?? "",
-  });
-  
-};
 
   if (isLoading) {
     return (
@@ -59,9 +41,21 @@ const handleAddToCart = () => {
       </div>
     );
   }
-  
 
   const images = product.images.length ? product.images : ["/images/placeholder-product.jpg"];
+
+  const handleAddToCart = () => {
+    if (!isSignedIn) {
+      router.push(`/login?redirect_url=/products/${product._id}`);
+      return;
+    }
+    addItem({
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0] ?? "",
+    });
+  };
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-10 sm:px-6 lg:px-8">
@@ -160,25 +154,25 @@ const handleAddToCart = () => {
 
           <p className="mt-6 text-foreground/80">{product.description}</p>
 
-{product.longDescription && (
-  <div className="mt-6">
-    <h2 className="text-sm font-semibold text-foreground">About this product</h2>
-    <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-foreground/80">
-      {product.longDescription}
-    </p>
-  </div>
-)}
+          {product.longDescription && (
+            <div className="mt-6">
+              <h2 className="text-sm font-semibold text-foreground">About this product</h2>
+              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-foreground/80">
+                {product.longDescription}
+              </p>
+            </div>
+          )}
 
           <Button
-  variant="primary"
-  size="lg"
-  fullWidth
-  className="mt-6"
-  isDisabled={product.stock === 0}
-  onPress={handleAddToCart}
->
-  Add to Cart
-</Button>
+            variant="primary"
+            size="lg"
+            fullWidth
+            className="mt-6"
+            isDisabled={product.stock === 0}
+            onPress={handleAddToCart}
+          >
+            Add to Cart
+          </Button>
 
           <div className="mt-8 rounded-xl bg-surface-secondary p-4">
             <h2 className="text-sm font-semibold text-foreground">Specifications</h2>
