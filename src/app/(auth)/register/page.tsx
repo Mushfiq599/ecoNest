@@ -92,106 +92,106 @@ export default function RegisterPage() {
 
   if (step === "verify") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="flex min-h-screen bg-background">
         <AuthSidePanel
-      title="Join EcoNest"
-      description="Discover eco-rated products, track your footprint, and get AI-powered sustainability advice."
-    />
-    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
-        <Surface className="w-full max-w-md space-y-6 rounded-2xl p-8">
-          <div className="space-y-1 text-center">
-            <h1 className="text-2xl font-semibold text-foreground">Verify your email</h1>
-            <p className="text-sm text-foreground/70">Enter the 6-digit code we sent you</p>
-          </div>
+          title="Almost there"
+          description="Check your inbox for a 6-digit verification code to finish setting up your account."
+        />
+        <div className="flex w-full items-center justify-center px-4 py-12 lg:w-3/5">
+          <Surface className="w-full max-w-md animate-slide-up space-y-6 rounded-2xl p-8">
+            <div className="space-y-1 text-center">
+              <h1 className="text-2xl font-semibold text-foreground">Verify your email</h1>
+              <p className="text-sm text-foreground/70">Enter the 6-digit code we sent you</p>
+            </div>
 
-          {serverError && (
-            <div className="rounded-lg bg-danger/10 px-4 py-3 text-sm text-danger">{serverError}</div>
-          )}
+            {serverError && (
+              <div className="rounded-lg bg-danger/10 px-4 py-3 text-sm text-danger">{serverError}</div>
+            )}
 
-          <TextField>
-            <Label>Verification code</Label>
-            <Input
-              variant="secondary"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="123456"
-              maxLength={6}
-            />
-          </TextField>
+            <TextField>
+              <Label>Verification code</Label>
+              <Input
+                variant="secondary"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="123456"
+                maxLength={6}
+              />
+            </TextField>
 
-          <Button fullWidth isPending={isSubmitting} onPress={handleVerify}>
-            Verify & Continue
-          </Button>
+            <Button fullWidth isPending={isSubmitting} onPress={handleVerify}>
+              Verify & Continue
+            </Button>
 
-          <div id="clerk-captcha" />
-        </Surface>
+            <div id="clerk-captcha" />
+          </Surface>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen bg-background">
       <AuthSidePanel
-      title="Almost there"
-      description="Check your inbox for a 6-digit verification code to finish setting up your account."
-    />
-    <div className="flex w-full items-center justify-center px-4 py-12 lg:w-3/5">
-      <Surface className="w-full max-w-md space-y-6 rounded-2xl p-8">
-        <div className="space-y-1 text-center">
-          <h1 className="text-2xl font-semibold text-foreground">Create your account</h1>
-          <p className="text-sm text-foreground/70">Join EcoNest and start your sustainability journey</p>
-        </div>
+        title="Join EcoNest"
+        description="Discover eco-rated products, track your footprint, and get AI-powered sustainability advice."
+      />
+      <div className="flex w-full items-center justify-center px-4 py-12 lg:w-3/5">
+        <Surface className="w-full max-w-md animate-slide-up space-y-6 rounded-2xl p-8">
+          <div className="space-y-1 text-center">
+            <h1 className="text-2xl font-semibold text-foreground">Create your account</h1>
+            <p className="text-sm text-foreground/70">Join EcoNest and start your sustainability journey</p>
+          </div>
 
-        {serverError && (
-          <div className="rounded-lg bg-danger/10 px-4 py-3 text-sm text-danger">{serverError}</div>
-        )}
+          {serverError && (
+            <div className="rounded-lg bg-danger/10 px-4 py-3 text-sm text-danger">{serverError}</div>
+          )}
 
-        <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <TextField isInvalid={!!errors.fullName}>
-            <Label>Full name</Label>
-            <Input variant="secondary" placeholder="Jane Doe" {...register("fullName")} />
-            {errors.fullName && <FieldError>{errors.fullName.message}</FieldError>}
-          </TextField>
+          <Form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <TextField isInvalid={!!errors.fullName}>
+              <Label>Full name</Label>
+              <Input variant="secondary" placeholder="Jane Doe" {...register("fullName")} />
+              {errors.fullName && <FieldError>{errors.fullName.message}</FieldError>}
+            </TextField>
 
-          <TextField isInvalid={!!errors.email}>
-            <Label>Email</Label>
-            <Input type="email" variant="secondary" placeholder="you@example.com" {...register("email")} />
-            {errors.email && <FieldError>{errors.email.message}</FieldError>}
-          </TextField>
+            <TextField isInvalid={!!errors.email}>
+              <Label>Email</Label>
+              <Input type="email" variant="secondary" placeholder="you@example.com" {...register("email")} />
+              {errors.email && <FieldError>{errors.email.message}</FieldError>}
+            </TextField>
 
-          <TextField isInvalid={!!errors.password}>
-            <Label>Password</Label>
-            <Input type="password" variant="secondary" placeholder="••••••••" {...register("password")} />
-            {errors.password && <FieldError>{errors.password.message}</FieldError>}
-          </TextField>
+            <TextField isInvalid={!!errors.password}>
+              <Label>Password</Label>
+              <Input type="password" variant="secondary" placeholder="••••••••" {...register("password")} />
+              {errors.password && <FieldError>{errors.password.message}</FieldError>}
+            </TextField>
 
-          <TextField isInvalid={!!errors.confirmPassword}>
-            <Label>Confirm password</Label>
-            <Input type="password" variant="secondary" placeholder="••••••••" {...register("confirmPassword")} />
-            {errors.confirmPassword && <FieldError>{errors.confirmPassword.message}</FieldError>}
-          </TextField>
+            <TextField isInvalid={!!errors.confirmPassword}>
+              <Label>Confirm password</Label>
+              <Input type="password" variant="secondary" placeholder="••••••••" {...register("confirmPassword")} />
+              {errors.confirmPassword && <FieldError>{errors.confirmPassword.message}</FieldError>}
+            </TextField>
 
-          <Button type="submit" fullWidth isPending={isSubmitting}>
-            Create Account
+            <Button type="submit" fullWidth isPending={isSubmitting}>
+              Create Account
+            </Button>
+          </Form>
+
+          <div className="flex items-center gap-3 text-xs text-foreground/50">
+            <div className="h-px flex-1 bg-border" />OR<div className="h-px flex-1 bg-border" />
+          </div>
+
+          <Button variant="outline" fullWidth onPress={handleGoogleSignUp}>
+            Continue with Google
           </Button>
-        </Form>
 
-        <div className="flex items-center gap-3 text-xs text-foreground/50">
-          <div className="h-px flex-1 bg-border" />OR<div className="h-px flex-1 bg-border" />
-        </div>
+          <div id="clerk-captcha" />
 
-        <Button variant="outline" fullWidth onPress={handleGoogleSignUp}>
-          Continue with Google
-        </Button>
-
-        <div id="clerk-captcha" />
-
-        <p className="text-center text-sm text-foreground/70">
-          Already have an account?{" "}
-          <a href="/login" className="text-accent hover:underline">Sign in</a>
-        </p>
-      </Surface>
+          <p className="text-center text-sm text-foreground/70">
+            Already have an account?{" "}
+            <a href="/login" className="text-accent hover:underline">Sign in</a>
+          </p>
+        </Surface>
       </div>
     </div>
   );
