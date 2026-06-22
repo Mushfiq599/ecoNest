@@ -4,6 +4,10 @@ const nextConfig = {
     images: {
         remotePatterns: [
             { protocol: "https", hostname: "images.unsplash.com" },
+            {
+                protocol: 'https',
+                hostname: 'plus.unsplash.com',
+            },
             { protocol: "https", hostname: "res.cloudinary.com" },
             { protocol: "https", hostname: "i.ibb.co" }, // imgBB, in case you reuse it like TaskNova
         ],
