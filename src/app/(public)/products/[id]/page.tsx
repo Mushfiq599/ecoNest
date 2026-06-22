@@ -89,8 +89,8 @@ export default function ProductDetailsPage() {
         <div>
           <div className="relative aspect-square overflow-hidden rounded-2xl bg-surface-secondary">
             <Image
-              src={images[activeImage]}
-              alt={product.name}
+  src={images[activeImage] ?? "/placeholder.png"}
+  alt={product.name}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
