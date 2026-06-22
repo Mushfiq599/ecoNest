@@ -20,7 +20,8 @@ export default function SSOCallbackPage() {
         await resource.finalize({ navigate: ({ decorateUrl }) => router.push(decorateUrl("/user")) });
       };
 
-      if (signIn.status === "complete") return finalize(signIn);
+      if ((signIn.status as string) === "complete") return finalize(signIn);
+
 
       if (signUp.isTransferable) {
         await signIn.create({ transfer: true });
