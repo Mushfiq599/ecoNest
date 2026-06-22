@@ -79,9 +79,9 @@ export default function ExplorePage() {
           <Slider
             value={[minPrice, maxPrice]}
             onChange={(value) => {
-              const [min, max] = value as number[];
-              setPriceRange(min, max);
-            }}
+  const [min, max] = value as number[];
+  setPriceRange(min ?? 0, max ?? 1000);
+}}
             minValue={0}
             maxValue={1000}
             step={10}
