@@ -13,7 +13,7 @@ export function AnimatedCounter({ target, suffix = "" }: { target: number; suffi
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated.current) {
+        if (entry?.isIntersecting && !hasAnimated.current) {
           hasAnimated.current = true;
           const duration = 1200;
           const start = performance.now();
