@@ -4,6 +4,7 @@ export interface Product {
   _id: string;
   name: string;
   description: string;
+   longDescription?: string;
   price: number;
   category: ProductCategory;
   ecoScore: number;
