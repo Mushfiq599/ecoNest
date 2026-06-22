@@ -75,12 +75,20 @@ export function HeroSection() {
               <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">{slide.title}</h1>
               <p className="mt-3 text-white/85">{slide.description}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button asChild variant="primary" size="lg">
-                  <Link href={slide.primaryCta.href}>{slide.primaryCta.label}</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="border-white/40 text-white hover:bg-white/10">
-                  <Link href={slide.secondaryCta.href}>{slide.secondaryCta.label}</Link>
-                </Button>
+                <Link
+  href={slide.primaryCta.href}
+  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all duration-200"
+  style={{ backgroundColor: "var(--color-primary)" }}
+>
+  {slide.primaryCta.label}
+</Link>
+<Link
+  href={slide.secondaryCta.href}
+  className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold border-2 transition-all duration-200"
+  style={{ borderColor: "white", color: "white" }}
+>
+  {slide.secondaryCta.label}
+</Link>
               </div>
             </div>
           </div>
