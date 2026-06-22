@@ -76,10 +76,9 @@ export default function AdminUsersPage() {
                     <td className="px-4 py-3 text-foreground/70">{u.email}</td>
                     <td className="px-4 py-3">
                       <Select
-                        size="sm"
-                        selectedKey={u.role}
-                        onSelectionChange={(key) => updateRole.mutate({ id: u._id, role: key as "user" | "admin" })}
-                      >
+  selectedKey={u.role}
+  onSelectionChange={(key) => updateRole.mutate({ id: u._id, role: key as "user" | "admin" })}
+>
                         <Select.Trigger>
                           <Select.Value />
                           <Select.Indicator />
