@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, Button } from "@heroui/react";
+import { Card } from "@heroui/react";
 import Link from "next/link";
 import { Star, Leaf } from "lucide-react";
 import { Product } from "@/types";
@@ -43,18 +43,13 @@ export function ProductCard({ product }: { product: Product }) {
 
       <Card.Footer className="flex items-center justify-between">
   <span className="text-lg font-semibold text-foreground">${product.price.toFixed(2)}</span>
-  <Button asChild variant="outline" size="sm">
-    <Link
+  <Link
   href={`/products/${product._id}`}
   className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-lg border transition-all duration-200"
-  style={{
-    borderColor: "var(--color-primary)",
-    color:       "var(--color-primary)",
-  }}
+  style={{ borderColor: "var(--color-primary)", color: "var(--color-primary)" }}
 >
   View Details
 </Link>
-  </Button>
 </Card.Footer>
     </Card>
   );
