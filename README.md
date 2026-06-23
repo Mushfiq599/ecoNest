@@ -13,7 +13,7 @@
 [![Clerk](https://img.shields.io/badge/Clerk-7.5.6-6C47FF?style=flat-square&logo=clerk)](https://clerk.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-[Live Demo](https://econest.vercel.app) · [Report Bug](https://github.com/yourusername/econest/issues) · [Request Feature](https://github.com/yourusername/econest/issues)
+[Live Demo]((https://eco-nest-beta.vercel.app/)) · [Report Bug](https://github.com/Mushfiq599/econest/issues) · [Request Feature](https://github.com/Mushfiq599/econest/issues)
 
 ![EcoNest Banner](https://placehold.co/1200x400/2D6A4F/D8F3DC?text=EcoNest+%E2%80%94+Sustainable+Living%2C+Simplified&font=inter)
 
